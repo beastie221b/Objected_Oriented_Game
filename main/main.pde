@@ -1,4 +1,6 @@
 PVector SCREEN_SIZE = new PVector(900, 600);
+PVector NET_SIZE = new PVector(10, 300);
+PVector NET_POSITION = new PVector(SCREEN_SIZE.x / 2, SCREEN_SIZE.y - NET_SIZE.y);
 
 void setup() {
   size(900, 600);
@@ -20,6 +22,10 @@ void draw() {
   ball.draw();
   player1.draw();
   player2.draw();
+  
+  circle(SCREEN_SIZE.x / 2, NET_SIZE.y, NET_SIZE.x);
+  rectMode(CORNER);
+  rect(NET_POSITION.x - NET_SIZE.x / 2, NET_POSITION.y, NET_SIZE.x, NET_SIZE.y);
   update();
 }
 

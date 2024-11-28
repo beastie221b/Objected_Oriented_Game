@@ -2,10 +2,11 @@ float MAX_VELOCITY = 5;
 
 class Player {
   PVector position, velocity, acceleration, size;
-  boolean player1;
+  int score;
   
-  Player(boolean is_player1) {
-    if (is_player1) {
+  Player(boolean player1) {
+    score = 0;
+    if (player1) {
       position = new PVector(SCREEN_SIZE.x / 4, 500);
     } else {
       position = new PVector(SCREEN_SIZE.x * 3 / 4, 500);
@@ -27,5 +28,9 @@ class Player {
     }
     
     position.add(velocity);
+  }
+  
+  void score() {
+    score ++;
   }
 }
