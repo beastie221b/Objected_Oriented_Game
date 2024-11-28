@@ -15,12 +15,14 @@ void init() {
 
 void draw() {
   background(255);
+  ball.draw();
   player1.draw();
   player2.draw();
   update();
 }
 
 void update() {
+  ball.update();
   player1.update();
   player2.update();
 }
