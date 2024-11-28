@@ -1,4 +1,3 @@
-PVector SCREEN_SIZE = new PVector(900, 600);
 float size = 20;
 int net_height = 200;
 
@@ -6,6 +5,7 @@ class Ball {
   PVector position, velocity, acceleration;
   
   Ball(int side) {
+    // value of side: 0 - start in the middle, 1 - start on the left, 2 - start on the right
     if(side == 0) {
       position = new PVector(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 3);
       velocity = new PVector(random(-1, 1) * random(20, 30), 0);

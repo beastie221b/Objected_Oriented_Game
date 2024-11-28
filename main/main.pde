@@ -8,7 +8,9 @@ void setup() {
 }
 
 Player player1, player2;
+Ball ball;
 void init() {
+  ball = new Ball(0);
   player1 = new Player(true);
   player2 = new Player(false);
 }
