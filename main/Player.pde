@@ -1,8 +1,9 @@
-float MAX_VELOCITY = 5;
+float MAX_VELOCITY = 10;
 
 class Player {
   PVector position, velocity, acceleration, size;
   boolean player1;
+  int move_rate;
   
   Player(boolean is_player1) {
     if (is_player1) {
@@ -11,8 +12,9 @@ class Player {
       position = new PVector(SCREEN_SIZE.x * 3 / 4, 500);
     }
     velocity = new PVector(0, 0);
-    acceleration = new PVector(0, 0);
+    acceleration = new PVector(1, 0);
     size = new PVector(100, 50);
+    move_rate = 0;
   }
   
   void draw() {
@@ -21,11 +23,17 @@ class Player {
   }
   
   void update() {
-    velocity.add(acceleration);
-    if (velocity.x > MAX_VELOCITY) {
-      velocity.x = MAX_VELOCITY;
+    if (abs(velocity.x + move_rate * acceleration.x) < MAX_VELOCITY) {
+      velocity.x += move_rate * acceleration.x;
+    } 
+    if (move_rate == 0 && velocity.x != 0) {
+      velocity.x -= (velocity.x - 0) / abs(velocity.x) * acceleration.x; 
     }
     
     position.add(velocity);
+  }
+  
+  void move(int rate) {
+    move_rate = rate;
   }
 }
