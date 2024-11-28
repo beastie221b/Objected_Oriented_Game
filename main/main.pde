@@ -3,6 +3,7 @@ PVector NET_SIZE = new PVector(10, 300);
 PVector NET_POSITION = new PVector(SCREEN_SIZE.x / 2, SCREEN_SIZE.y - NET_SIZE.y);
 boolean game_over = false;
 boolean player1_won = false;
+int[] key_pressed = {0, 0};
 
 void setup() {
   size(900, 600);
@@ -61,6 +62,9 @@ void draw() {
 }
 
 void update() {
+  player1.move(key_pressed[0]);
+  player2.move(key_pressed[1]);
+  
   ball.update();
   player1.update();
   player2.update();
@@ -69,4 +73,45 @@ void update() {
 void win(boolean player1) {
   game_over = true;
   player1_won = player1;
+void keyPressed() {
+  // -1 for moving left, +1 for moving right
+  if (key == 'a' || key == 'A') {
+    if (key_pressed[0] > -1) key_pressed[0] --;
+  }
+  
+  if (key == 'd' || key == 'D') {
+    if (key_pressed[0] < 1) key_pressed[0] ++;
+  }
+  
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      if (key_pressed[1] > -1) key_pressed[1] --;
+    }
+    
+    if (keyCode == RIGHT) {
+      if (key_pressed[1] < 1) key_pressed[1] ++;
+    }
+  }
+  
+  println(key);
+}
+
+void keyReleased() {
+  if (key == 'a' || key == 'A') {
+    key_pressed[0] ++;
+  }
+  
+  if (key == 'd' || key == 'D') {
+    key_pressed[0] --;
+  }
+  
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      key_pressed[1]++;
+    }
+    
+    if (keyCode == RIGHT) {
+      key_pressed[1]--;
+    }
+  }
 }
