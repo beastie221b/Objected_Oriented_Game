@@ -1,5 +1,5 @@
 float MAX_VELOCITY = 5;
-int WIN_SCORE = 1;
+int WIN_SCORE = 7;
 
 class Player {
   PVector position, velocity, acceleration, size;
