@@ -1,11 +1,14 @@
 float MAX_VELOCITY = 5;
+int WIN_SCORE = 1;
 
 class Player {
   PVector position, velocity, acceleration, size;
+  boolean cur_player1;
   int score;
   
   Player(boolean player1) {
     score = 0;
+    cur_player1 = player1;
     if (player1) {
       position = new PVector(SCREEN_SIZE.x / 4, 500);
     } else {
@@ -32,5 +35,8 @@ class Player {
   
   void score() {
     score ++;
+    if (score >= WIN_SCORE) {
+      win(cur_player1);
+    }
   }
 }
