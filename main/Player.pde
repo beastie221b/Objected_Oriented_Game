@@ -1,4 +1,5 @@
-float MAX_VELOCITY = 5;
+float MAX_VELOCITY = 10;
+float BOUNCE_RATIO = 1.3;
 int WIN_SCORE = 7;
 
 class Player {
@@ -10,14 +11,16 @@ class Player {
   Player(boolean player1) {
     score = 0;
     cur_player1 = player1;
+    float x;
     if (player1) {
-      position = new PVector(SCREEN_SIZE.x / 4, 500);
+      x = SCREEN_SIZE.x / 4;
     } else {
-      position = new PVector(SCREEN_SIZE.x * 3 / 4, 500);
+      x = SCREEN_SIZE.x * 3 / 4;
     }
+    position = new PVector(x, 550);
     velocity = new PVector(0, 0);
     acceleration = new PVector(1, 0);
-    size = new PVector(100, 50);
+    size = new PVector(70, 70);
     move_rate = 0;
   }
   
@@ -34,7 +37,17 @@ class Player {
       velocity.x -= (velocity.x - 0) / abs(velocity.x) * acceleration.x; 
     }
     
+    bounce_ball();
     position.add(velocity);
+  }
+  
+  void bounce_ball() {
+    if (PVector.dist(position, ball.position) < BALL_SIZE / 2 + size.x / 2 && ball.position.y < position.y) {
+      PVector temp_position = new PVector();
+      temp_position = ball.position.copy();
+      float angle = PVector.angleBetween(new PVector(1, 0), temp_position.sub(position));
+      ball.cal_velocity_after_collision(angle, BOUNCE_RATIO);
+    }
   }
   
   void score() {
@@ -42,6 +55,7 @@ class Player {
     if (score >= WIN_SCORE) {
       win(cur_player1);
     }
+  }
   void move(int rate) {
     move_rate = rate;
   }

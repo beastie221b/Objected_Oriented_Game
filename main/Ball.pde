@@ -1,5 +1,7 @@
-float size = 20;
-int net_height = 200;
+float BALL_SIZE = 20;
+float MAX_BALL_VELOCITY = 8;
+float WALL_BOUNCE_RATIO = 1.2;
+float NET_BOUNCE_RATIO = 1;
 
 class Ball {
   PVector position, velocity, acceleration;
@@ -21,23 +23,39 @@ class Ball {
   
   void draw() {
     fill(0);
-    circle(position.x, position.y, size);
+    circle(position.x, position.y, BALL_SIZE);
+  }
+  
+  void cal_velocity_after_collision(float angle, float bounce_ratio) {
+    velocity.x = cos(angle) * velocity.mag();
+    velocity.y = -sin(angle) * velocity.mag();
+    velocity.mult(bounce_ratio);
   }
   
   void check_collision() {
     // Hit side of screen
-    if (position.x - size / 2 <= 0 || position.x + size / 2 >= SCREEN_SIZE.x) {
-      velocity.x *= -1;
+    if (position.x - BALL_SIZE / 2 <= 0) {
+      position.x = BALL_SIZE / 2;
+      velocity.x *= -1 * WALL_BOUNCE_RATIO;
+    } else if(position.x + BALL_SIZE / 2 >= SCREEN_SIZE.x) {
+      position.x = SCREEN_SIZE.x - BALL_SIZE / 2;
+      velocity.x *= -1 * WALL_BOUNCE_RATIO;
     }
     
     // Hit net on the side
-    if (position.y > NET_SIZE.y &&
-      ((velocity.x > 0 && position.x + size / 2 >= NET_POSITION.x - NET_SIZE.x / 2 && position.x + size / 2 <= NET_POSITION.x + NET_SIZE.x / 2) ||
-      (velocity.x < 0 && position.x - size / 2 <= NET_POSITION.x + NET_SIZE.x / 2 && position.x - size / 2 >= NET_POSITION.x - NET_SIZE.x / 2))) {
-        velocity.x *= -1;
+    if (position.y > NET_POSITION.y &&
+      ((velocity.x > 0 && position.x + BALL_SIZE / 2 >= NET_POSITION.x - NET_SIZE.x / 2 && position.x + BALL_SIZE / 2 <= NET_POSITION.x + NET_SIZE.x / 2) ||
+      (velocity.x < 0 && position.x - BALL_SIZE / 2 <= NET_POSITION.x + NET_SIZE.x / 2 && position.x - BALL_SIZE / 2 >= NET_POSITION.x - NET_SIZE.x / 2))) {
+        velocity.x *= -1 * NET_BOUNCE_RATIO;
     }
     
     // Hit net on the tip
+    if (PVector.dist(position, NET_POSITION) < BALL_SIZE / 2 + NET_SIZE.x / 2 && position.y < NET_POSITION.y) {
+      PVector temp_position = new PVector();
+      temp_position = position.copy();
+      float angle = PVector.angleBetween(new PVector(1, 0), temp_position.sub(NET_POSITION));
+      cal_velocity_after_collision(angle, NET_BOUNCE_RATIO);
+    }
   }
   
   void check_win() {
@@ -58,9 +76,16 @@ class Ball {
   
   void update() {
     check_win();
-    check_collision();
-    
     velocity.add(acceleration);
+    if(abs(velocity.x) > MAX_BALL_VELOCITY) {
+      velocity.x = (velocity.x - 0) / abs(velocity.x) * MAX_BALL_VELOCITY;
+    }
+    
+    if(abs(velocity.y) > MAX_BALL_VELOCITY) {
+      velocity.y = (velocity.y - 0) / abs(velocity.y) * MAX_BALL_VELOCITY;
+    }
+    
+    check_collision();
     position.add(velocity);
   }
 }

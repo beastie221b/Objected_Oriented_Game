@@ -1,5 +1,5 @@
 PVector SCREEN_SIZE = new PVector(900, 600);
-PVector NET_SIZE = new PVector(10, 300);
+PVector NET_SIZE = new PVector(10, 250);
 PVector NET_POSITION = new PVector(SCREEN_SIZE.x / 2, SCREEN_SIZE.y - NET_SIZE.y);
 boolean game_over = false;
 boolean player1_won = false;
@@ -30,7 +30,7 @@ void draw() {
     player1.draw();
     player2.draw();
     
-    circle(SCREEN_SIZE.x / 2, NET_SIZE.y, NET_SIZE.x);
+    circle(NET_POSITION.x, NET_POSITION.y, NET_SIZE.x);
     rectMode(CORNER);
     rect(NET_POSITION.x - NET_SIZE.x / 2, NET_POSITION.y, NET_SIZE.x, NET_SIZE.y);
     textSize(20);
@@ -68,11 +68,18 @@ void update() {
   ball.update();
   player1.update();
   player2.update();
+  
+  if (player1.position.x <= player1.size.x / 2) player1.position.x = player1.size.x / 2;
+  else if (player1.position.x >= NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2) player1.position.x = NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2;
+  if (player2.position.x >= SCREEN_SIZE.x - player2.size.x / 2) player2.position.x = SCREEN_SIZE.x - player2.size.x / 2;
+  else if (player2.position.x <= NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2) player2.position.x = NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2;
 }
 
 void win(boolean player1) {
   game_over = true;
   player1_won = player1;
+}
+  
 void keyPressed() {
   // -1 for moving left, +1 for moving right
   if (key == 'a' || key == 'A') {
@@ -92,8 +99,6 @@ void keyPressed() {
       if (key_pressed[1] < 1) key_pressed[1] ++;
     }
   }
-  
-  println(key);
 }
 
 void keyReleased() {
