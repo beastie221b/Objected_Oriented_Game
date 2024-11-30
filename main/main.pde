@@ -3,6 +3,7 @@ PVector NET_SIZE = new PVector(10, 250);
 PVector NET_POSITION = new PVector(SCREEN_SIZE.x / 2, SCREEN_SIZE.y - NET_SIZE.y);
 boolean game_over = false;
 boolean player1_won = false;
+boolean one_player = false;
 int[] key_pressed = {0, 0};
 
 void setup() {
@@ -13,13 +14,16 @@ void setup() {
 }
 
 Player player1, player2;
+AI_Player computer;
 Ball ball;
 void init() {
   ball = new Ball(0);
   player1 = new Player(true);
   player2 = new Player(false);
+  computer = new AI_Player();
   game_over = false;
   player1_won = false;
+  one_player = true;
 }
 
 void draw() {
@@ -65,6 +69,10 @@ void update() {
   player1.move(key_pressed[0]);
   player2.move(key_pressed[1]);
   
+  if (one_player) {
+    computer.update();
+  }
+  
   ball.update();
   player1.update();
   player2.update();
@@ -90,13 +98,15 @@ void keyPressed() {
     if (key_pressed[0] < 1) key_pressed[0] ++;
   }
   
-  if (key == CODED) {
-    if (keyCode == LEFT) {
-      if (key_pressed[1] > -1) key_pressed[1] --;
-    }
-    
-    if (keyCode == RIGHT) {
-      if (key_pressed[1] < 1) key_pressed[1] ++;
+  if (!one_player) {
+    if (key == CODED) {
+      if (keyCode == LEFT) {
+        if (key_pressed[1] > -1) key_pressed[1] --;
+      }
+      
+      if (keyCode == RIGHT) {
+        if (key_pressed[1] < 1) key_pressed[1] ++;
+      }
     }
   }
 }
@@ -110,13 +120,15 @@ void keyReleased() {
     key_pressed[0] --;
   }
   
-  if (key == CODED) {
-    if (keyCode == LEFT) {
-      key_pressed[1]++;
-    }
-    
-    if (keyCode == RIGHT) {
-      key_pressed[1]--;
+  if (!one_player) {
+    if (key == CODED) {
+      if (keyCode == LEFT) {
+        key_pressed[1]++;
+      }
+      
+      if (keyCode == RIGHT) {
+        key_pressed[1]--;
+      }
     }
   }
 }

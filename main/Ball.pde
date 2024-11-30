@@ -6,6 +6,12 @@ float NET_BOUNCE_RATIO = 1.2;
 class Ball {
   PVector position, velocity, acceleration;
   
+  Ball() {
+    position = new PVector(0, 0);
+    velocity = new PVector(0, 0);
+    acceleration = new PVector(0, 0);
+  }
+  
   Ball(int side) {
     // value of side: 0 - start in the middle, 1 - start on the left, 2 - start on the right
     if(side == 0) {
@@ -19,6 +25,12 @@ class Ball {
       velocity = new PVector(0, 0);
     }
     acceleration = new PVector(0, 0.08);
+  }
+  
+  void copy(Ball other_ball) {
+    position = other_ball.position.copy();
+    velocity = other_ball.velocity.copy();
+    acceleration = other_ball.acceleration.copy();
   }
   
   void draw() {
