@@ -1,7 +1,7 @@
 PVector SCREEN_SIZE = new PVector(900, 600);
 PVector NET_SIZE = new PVector(10, 250);
 PVector NET_POSITION = new PVector(SCREEN_SIZE.x / 2, SCREEN_SIZE.y - NET_SIZE.y);
-boolean game_over = false;
+int game_stage = 0; // 0 for start page, 1 for helper page, 2 for game page, 3 for game over page
 boolean player1_won = false;
 int[] key_pressed = {0, 0};
 
@@ -18,14 +18,24 @@ void init() {
   ball = new Ball(0);
   player1 = new Player(true);
   player2 = new Player(false);
-  game_over = false;
+  game_stage = 0;
   player1_won = false;
 }
 
 void draw() {
   background(255);
   
-  if (!game_over) {
+  if (game_stage == 0) {
+    rectMode(CORNER);
+    fill(255);
+    rect(0, 0, SCREEN_SIZE.x, SCREEN_SIZE.y);
+    textSize(30);
+    fill(0);
+    text("Start", SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2);
+    text("1P", SCREEN_SIZE.x / 2 - 50, SCREEN_SIZE.y / 2 + 50);
+    text("2P", SCREEN_SIZE.x / 2 + 50, SCREEN_SIZE.y / 2 + 50);
+    update();
+  } else if (game_stage == 2) {
     ball.draw();
     player1.draw();
     player2.draw();
@@ -38,11 +48,10 @@ void draw() {
     text(player2.score, SCREEN_SIZE.x - 50, 50);
     
     update();
-  } else {
+  } else if (game_stage == 3) {
     rectMode(CORNER);
     fill(255);
     rect(0, 0, SCREEN_SIZE.x, SCREEN_SIZE.y);
-    
     if (player1_won) {
       textSize(30);
       fill(0);
@@ -62,21 +71,28 @@ void draw() {
 }
 
 void update() {
-  player1.move(key_pressed[0]);
-  player2.move(key_pressed[1]);
-  
-  ball.update();
-  player1.update();
-  player2.update();
-  
-  if (player1.position.x <= player1.size.x / 2) player1.position.x = player1.size.x / 2;
-  else if (player1.position.x >= NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2) player1.position.x = NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2;
-  if (player2.position.x >= SCREEN_SIZE.x - player2.size.x / 2) player2.position.x = SCREEN_SIZE.x - player2.size.x / 2;
-  else if (player2.position.x <= NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2) player2.position.x = NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2;
+  if (game_stage == 0) {
+    println("here");
+    if (mousePressed) {
+      game_stage = 2;
+    }
+  } else if (game_stage == 2) {
+    player1.move(key_pressed[0]);
+    player2.move(key_pressed[1]);
+    
+    ball.update();
+    player1.update();
+    player2.update();
+    
+    if (player1.position.x <= player1.size.x / 2) player1.position.x = player1.size.x / 2;
+    else if (player1.position.x >= NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2) player1.position.x = NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2;
+    if (player2.position.x >= SCREEN_SIZE.x - player2.size.x / 2) player2.position.x = SCREEN_SIZE.x - player2.size.x / 2;
+    else if (player2.position.x <= NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2) player2.position.x = NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2;
+  }
 }
 
 void win(boolean player1) {
-  game_over = true;
+  game_stage = 3;
   player1_won = player1;
 }
   
