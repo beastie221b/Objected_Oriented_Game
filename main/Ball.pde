@@ -1,7 +1,7 @@
 float BALL_SIZE = 20;
 float MAX_BALL_VELOCITY = 8;
-float WALL_BOUNCE_RATIO = 1.2;
-float NET_BOUNCE_RATIO = 1;
+float WALL_BOUNCE_RATIO = 0.5;
+float NET_BOUNCE_RATIO = 1.2;
 
 class Ball {
   PVector position, velocity, acceleration;

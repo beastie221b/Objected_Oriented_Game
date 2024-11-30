@@ -19,7 +19,7 @@ class Player {
     }
     position = new PVector(x, 550);
     velocity = new PVector(0, 0);
-    acceleration = new PVector(1, 0);
+    acceleration = new PVector(1.5, 0);
     size = new PVector(70, 70);
     move_rate = 0;
   }
