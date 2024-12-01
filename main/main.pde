@@ -5,6 +5,8 @@ int game_stage = 0; // 0 for start page, 1 for helper page, 2 for game page, 3 f
 boolean player1_won = false;
 boolean one_player = false;
 int[] key_pressed = {0, 0};
+PVector[] button_loc = {new PVector(SCREEN_SIZE.x / 2 - 50, SCREEN_SIZE.y / 2 + 50), new PVector(SCREEN_SIZE.x / 2 + 50, SCREEN_SIZE.y / 2 + 50)};
+PVector button_size = new PVector(30, 50);
 
 void setup() {
   size(900, 600);
@@ -36,8 +38,8 @@ void draw() {
     textSize(30);
     fill(0);
     text("Start", SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2);
-    text("1P", SCREEN_SIZE.x / 2 - 50, SCREEN_SIZE.y / 2 + 50);
-    text("2P", SCREEN_SIZE.x / 2 + 50, SCREEN_SIZE.y / 2 + 50);
+    text("1P", button_loc[0].x, button_loc[0].y);
+    text("2P", button_loc[1].x, button_loc[1].y);
     update();
   } else if (game_stage == 2) {
     ball.draw();
@@ -75,9 +77,13 @@ void draw() {
 }
 
 void update() {
-  if (game_stage == 0) {
-    if (mousePressed) {
+  if (game_stage == 0 && mousePressed) {
+    if (mouseX > button_loc[0].x && mouseX < button_loc[0].x + button_size.x && mouseY > button_loc[0].y - button_size.y && mouseY < button_loc[0].y) {
       game_stage = 2;
+      one_player = true;
+    } else if(mouseX > button_loc[1].x && mouseX < button_loc[1].x + button_size.x && mouseY > button_loc[1].y - button_size.y && mouseY < button_loc[1].y) {
+      game_stage = 2;
+      one_player = false;
     }
   } else if (game_stage == 2) {
     player1.move(key_pressed[0]);
