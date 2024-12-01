@@ -94,14 +94,7 @@ void update() {
     if (one_player) {
       computer.update();
     }
-  ball.update();
-  player1.update();
-  player2.update();
-  
-  if (player1.position.x <= player1.size.x / 2) player1.position.x = player1.size.x / 2;
-  else if (player1.position.x >= NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2) player1.position.x = NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2;
-  if (player2.position.x >= SCREEN_SIZE.x - player2.size.x / 2) player2.position.x = SCREEN_SIZE.x - player2.size.x / 2;
-  else if (player2.position.x <= NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2) player2.position.x = NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2;
+  }
 }
 
 void win(boolean player1) {
