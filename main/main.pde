@@ -3,6 +3,7 @@ PVector NET_SIZE = new PVector(10, 250);
 PVector NET_POSITION = new PVector(SCREEN_SIZE.x / 2, SCREEN_SIZE.y - NET_SIZE.y);
 int game_stage = 0; // 0 for start page, 1 for helper page, 2 for game page, 3 for game over page
 boolean player1_won = false;
+boolean one_player = false;
 int[] key_pressed = {0, 0};
 
 void setup() {
@@ -13,13 +14,16 @@ void setup() {
 }
 
 Player player1, player2;
+AI_Player computer;
 Ball ball;
 void init() {
   ball = new Ball(0);
   player1 = new Player(true);
   player2 = new Player(false);
   game_stage = 0;
+  computer = new AI_Player();
   player1_won = false;
+  one_player = true;
 }
 
 void draw() {
@@ -72,7 +76,6 @@ void draw() {
 
 void update() {
   if (game_stage == 0) {
-    println("here");
     if (mousePressed) {
       game_stage = 2;
     }
@@ -88,7 +91,17 @@ void update() {
     else if (player1.position.x >= NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2) player1.position.x = NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2;
     if (player2.position.x >= SCREEN_SIZE.x - player2.size.x / 2) player2.position.x = SCREEN_SIZE.x - player2.size.x / 2;
     else if (player2.position.x <= NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2) player2.position.x = NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2;
-  }
+    if (one_player) {
+      computer.update();
+    }
+  ball.update();
+  player1.update();
+  player2.update();
+  
+  if (player1.position.x <= player1.size.x / 2) player1.position.x = player1.size.x / 2;
+  else if (player1.position.x >= NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2) player1.position.x = NET_POSITION.x - NET_SIZE.x / 2 - player1.size.x / 2;
+  if (player2.position.x >= SCREEN_SIZE.x - player2.size.x / 2) player2.position.x = SCREEN_SIZE.x - player2.size.x / 2;
+  else if (player2.position.x <= NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2) player2.position.x = NET_POSITION.x + NET_SIZE.x / 2 + player2.size.x / 2;
 }
 
 void win(boolean player1) {
@@ -106,13 +119,15 @@ void keyPressed() {
     if (key_pressed[0] < 1) key_pressed[0] ++;
   }
   
-  if (key == CODED) {
-    if (keyCode == LEFT) {
-      if (key_pressed[1] > -1) key_pressed[1] --;
-    }
-    
-    if (keyCode == RIGHT) {
-      if (key_pressed[1] < 1) key_pressed[1] ++;
+  if (!one_player) {
+    if (key == CODED) {
+      if (keyCode == LEFT) {
+        if (key_pressed[1] > -1) key_pressed[1] --;
+      }
+      
+      if (keyCode == RIGHT) {
+        if (key_pressed[1] < 1) key_pressed[1] ++;
+      }
     }
   }
 }
@@ -126,13 +141,15 @@ void keyReleased() {
     key_pressed[0] --;
   }
   
-  if (key == CODED) {
-    if (keyCode == LEFT) {
-      key_pressed[1]++;
-    }
-    
-    if (keyCode == RIGHT) {
-      key_pressed[1]--;
+  if (!one_player) {
+    if (key == CODED) {
+      if (keyCode == LEFT) {
+        key_pressed[1]++;
+      }
+      
+      if (keyCode == RIGHT) {
+        key_pressed[1]--;
+      }
     }
   }
 }
