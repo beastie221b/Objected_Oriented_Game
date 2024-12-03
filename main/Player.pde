@@ -6,7 +6,7 @@ class Player {
   PVector position, velocity, acceleration, size;
   boolean cur_player1;
   int score;
-  int move_rate;
+  int move_dir;
   
   Player(boolean player1) {
     score = 0;
@@ -21,7 +21,7 @@ class Player {
     velocity = new PVector(0, 0);
     acceleration = new PVector(1.5, 0);
     size = new PVector(70, 70);
-    move_rate = 0;
+    move_dir = 0;
   }
   
   void draw() {
@@ -30,10 +30,10 @@ class Player {
   }
   
   void update() {
-    if (abs(velocity.x + move_rate * acceleration.x) < MAX_VELOCITY) {
-      velocity.x += move_rate * acceleration.x;
+    if (abs(velocity.x + move_dir * acceleration.x) < MAX_VELOCITY) {
+      velocity.x += move_dir * acceleration.x;
     } 
-    if (move_rate == 0 && velocity.x != 0) {
+    if (move_dir == 0 && velocity.x != 0) {
       velocity.x -= (velocity.x - 0) / abs(velocity.x) * acceleration.x; 
     }
     
@@ -42,6 +42,7 @@ class Player {
   }
   
   void bounce_ball() {
+    // Bounce the ball if it hits player object
     if (PVector.dist(position, ball.position) < BALL_SIZE / 2 + size.x / 2 && ball.position.y < position.y) {
       PVector temp_position = new PVector();
       temp_position = ball.position.copy();
@@ -56,7 +57,8 @@ class Player {
       win(cur_player1);
     }
   }
-  void move(int rate) {
-    move_rate = rate;
+  
+  void move(int dir) {
+    move_dir = dir;
   }
 }

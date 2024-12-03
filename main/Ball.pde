@@ -27,6 +27,7 @@ class Ball {
     acceleration = new PVector(0, 0.08);
   }
   
+  // Used for bot forecast
   void copy(Ball other_ball) {
     position = other_ball.position.copy();
     velocity = other_ball.velocity.copy();
@@ -38,6 +39,7 @@ class Ball {
     circle(position.x, position.y, BALL_SIZE);
   }
   
+  // Calculate new velocity after colliding any arc
   void cal_velocity_after_collision(float angle, float bounce_ratio) {
     velocity.x = cos(angle) * velocity.mag();
     velocity.y = -sin(angle) * velocity.mag();
