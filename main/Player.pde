@@ -25,7 +25,7 @@ class Player {
   }
   
   void draw() {
-    fill(0);
+    fill(#40f4d2);
     arc(position.x, position.y, size.x, size.y, PI, 2 * PI, CHORD);
   }
   

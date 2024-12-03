@@ -34,7 +34,7 @@ class Ball {
   }
   
   void draw() {
-    fill(0);
+    fill(#40f4d2);
     circle(position.x, position.y, BALL_SIZE);
   }
   
